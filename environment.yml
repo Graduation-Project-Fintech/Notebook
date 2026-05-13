@@ -1,0 +1,72 @@
+# 미국 핀튜버 신뢰도 분석 시스템 — 통합 환경
+#
+# 졸업프로젝트: 영상/음성 데이터 기반 종목 추천 추출 및 사후 검증
+#
+# 셋업:
+#   conda env create -f environment.yml
+#   conda activate finfluencer-credibility
+#
+# 포함 단계:
+#   01_collect    YouTube 영상 수집 (yt-dlp + YouTube Data API)
+#   02_transcribe Whisper 한국어/영어 자막 + 추천 구간 후보 추출
+#   03_analyze    Gemini 멀티모달 (비디오 + 자막 → JSON 라벨)
+#   04_backtest   yfinance 기반 백테스팅 + 신뢰도 산출
+#
+# 환경 가정:
+#   - 팀원 OS: macOS (Apple Silicon 포함)
+#   - Whisper는 CPU/MPS 동작 (NVIDIA GPU 불필요)
+#   - Gemini는 API 호출이라 GPU 무관
+
+name: finfluencer-credibility
+channels:
+  - conda-forge
+
+dependencies:
+  # === 코어 ===
+  - python=3.11
+  - pip
+  - jupyterlab                  # 분석/시각화용 (CLI와 별개)
+  - ipykernel
+
+  # === 데이터 처리 ===
+  - pandas=2.2.*
+  - numpy=1.26.*                # 안정성 우선 — yfinance/pandas 호환 보장
+  - matplotlib=3.9.*
+  - seaborn=0.13.*
+
+  # === 시스템 의존성 ===
+  # ffmpeg는 Whisper의 오디오 디코딩 + yt-dlp의 후처리에 필수
+  # conda 채널에서 자동 설치되므로 brew install 불필요
+  - ffmpeg
+
+  # === pip-only ===
+  - pip:
+      # ── 01_collect ──
+      - yt-dlp>=2024.5.27                   # 영상 다운로드
+      - google-api-python-client>=2.130.0   # YouTube Data API v3
+
+      # ── 02_transcribe ──
+      # ⚠ 주의: PyPI의 'whisper' 패키지는 OpenAI Whisper가 아님
+      #   import whisper; whisper.load_model(...) 형태로 쓰려면 'openai-whisper' 필요
+      - openai-whisper>=20240930
+
+      # ── 03_analyze ──
+      # Gemini API (멀티모달: 비디오 + 텍스트 동시 입력)
+      # 옛날 SDK이지만 Python 3.11에서 정상 작동, 멀티모달 비디오 입력 지원
+      - google-generativeai==0.8.*
+      - google-ai-generativelanguage==0.6.*
+
+      # JSON 출력 검증
+      - pydantic>=2.7.0                     # Gemini 응답 스키마 검증
+      - jsonschema>=4.22.0
+
+      # ── 04_backtest ──
+      - yfinance>=0.2.40                    # 미국 주식 과거 시세 (무료, 키 불필요)
+
+      # ── shared ──
+      - python-dotenv>=1.0.0                # .env 로딩
+      - tqdm>=4.66.0                        # 진행률 표시
+      - click>=8.1.0                        # CLI 인터페이스 (run_pipeline.py)
+
+      # ── validation (선택) ──
+      - scikit-learn>=1.4.0                 # Gemini vs 사람 라벨 정확도 측정

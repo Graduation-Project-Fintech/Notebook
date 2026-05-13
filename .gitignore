@@ -1,0 +1,45 @@
+# 핀플루언서 신뢰도 분석 — gitignore
+
+# 환경변수 (절대 커밋 금지)
+.env
+.env.local
+
+# 데이터 (대용량, 분석 후 삭제 정책)
+data/
+!data/.gitkeep
+
+# Whisper 모델 캐시 (~3GB for large-v2)
+.cache/whisper/
+
+# Gemini 캐시 (만약 사용 시)
+.cache/gemini/
+
+# yfinance 캐시
+.cache/yfinance/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# JupyterLab artifacts
+.virtual_documents/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Conda
+*.conda-lock
+
+# 졸프 발표 자료 (별도 관리)
+presentation/
