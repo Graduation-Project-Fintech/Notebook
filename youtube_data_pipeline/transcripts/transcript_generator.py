@@ -4,7 +4,16 @@ from glob import glob
 from multiprocessing import Pool
 from pathlib import Path
 import whisper
+import torch
 from utils import write_to_csv
+
+
+def get_device():
+    if torch.cuda.is_available():
+        return "cuda"
+    elif torch.backends.mps.is_available():
+        return "mps"
+    return "cpu"
 
 
 ########## Extract Audios ##########
@@ -77,7 +86,7 @@ def aggregate_segment_wise_transcripts(args):
 
 def run_whisper_for_segments(args):
     df = pd.read_csv(args.sampled_dataset_file)
-    model = whisper.load_model("large-v2")
+    model = whisper.load_model("large-v2", device=get_device())
 
     # Ensure the transcript directory exists
     if not os.path.exists(args.transcript_dir):
@@ -135,7 +144,7 @@ def aggregate_transcripts(args):
 def run_whisper(args):
     df = pd.read_csv(args.sampled_dataset_file)
     video_ids = df['videoId'].tolist()
-    model = whisper.load_model("large-v2")
+    model = whisper.load_model("large-v2", device=get_device())
 
     # Ensure the transcript directory exists
     if not os.path.exists(args.transcript_dir):

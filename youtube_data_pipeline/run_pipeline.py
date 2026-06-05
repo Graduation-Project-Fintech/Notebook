@@ -109,16 +109,18 @@ def get_args():
                         default=os.path.join(dataset_dir, 'sampled_dataset.csv'))
 
     parser.add_argument('--total_videos_to_sample', type=int,
-                        default=10)
+                        default=1)
 
     parser.add_argument('--past_years_to_consider', type=int,
-                        default=3)
+                        default=1)
 
     parser.add_argument('--channel_ids', type=str, help='Channel ids for fetching all input channels',
                         default=os.path.join(channels_dir, 'channel_ids.txt'))
 
     parser.add_argument('--api_key', type=str, help='Youtube API key',
                         default=YOUTUBE_API_KEY)
+
+    parser.add_argument('--generate_segment_wise_transcripts', action='store_true', default=False)
 
     args = parser.parse_args()
     return args
