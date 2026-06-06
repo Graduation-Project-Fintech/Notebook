@@ -9,7 +9,7 @@ from youtube_data.video_downloader import download_videos
 from transcripts.transcript_generator import generate_transcripts
 from generate_dataset.dataset_generator import generate
 
-load_dotenv('.env')
+load_dotenv()
 YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
 
 

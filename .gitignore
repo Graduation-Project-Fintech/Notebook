@@ -1,0 +1,17 @@
+.env
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# youtube_data_pipeline 생성 파일
+youtube_data_pipeline/videos/
+youtube_data_pipeline/audios/
+youtube_data_pipeline/dataset/
+youtube_data_pipeline/channels/UC*/
+
+# 파이프라인 출력 데이터
+prompting/inference/outputs/
+data_analysis/notebooks/non_penny_recommendations.csv
+back_testing/computed_data/
+back_testing/historical_data/
