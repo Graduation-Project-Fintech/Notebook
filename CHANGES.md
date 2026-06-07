@@ -84,7 +84,25 @@
 
 ---
 
-## 3. 보안 & 파일 정리
+## 3. 단일 종목 → 복수 종목 추천으로 변경
+
+`run_gemini.py`의 프롬프트를 단일 종목에서 복수 종목을 지원하도록 수정.
+
+**배경**: 원본 `GeminiPrompt.ipynb`는 인간 어노테이터가 단일 추천 구간으로 잘라낸 세그먼트를 입력으로 받는 구조였기 때문에 단일 종목으로 설계되어 있었음. 그 코드를 전체 영상에 적용하도록 수정하는 과정에서 단일 종목 제약이 그대로 남은 것. 전체 영상에는 여러 종목이 언급될 수 있으므로 복수로 변경.
+
+**수정 내용** (`prompting/inference/run_gemini.py`)
+
+| 항목 | 변경 전 | 변경 후 |
+|---|---|---|
+| 프롬프트 지시 | "Identify the single stock recommendation" | "Identify stock recommendations" |
+| JSON 키 | `Stock Recommendation Present` | `Stock Recommendations Present` |
+| JSON 키 | `Recommendation` | `Recommendations` |
+
+> 평가 코드(`parse_and_evaluate.ipynb`)는 `whole_` prefix 모델에 대해 이미 `Recommendations`(복수)를 기대하도록 짜여 있었음 → 파싱 코드 수정 불필요.
+
+---
+
+## 4. 보안 & 파일 정리
 
 ### API 키 하드코딩 제거
 

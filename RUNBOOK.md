@@ -110,12 +110,12 @@ python run_gemini.py
 
 ```json
 {
-  "Stock Recommendation Present": "Yes",
-  "Recommendation": [{
+  "Stock Recommendations Present": "Yes",
+  "Recommendations": [{
     "Action": "Buy",
-    "Ticker Name": "ABR",
+    "Justification": "...",
     "Conviction Score": "3",
-    "Justification": "..."
+    "Ticker Name": "ABR"
   }]
 }
 ```

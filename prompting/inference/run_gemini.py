@@ -75,14 +75,14 @@ def segment_create_prompt(series, lm_type='vlm', whole=True):
             "\n           - Consistency: High conviction if the title and transcript are strongly aligned."
         )
 
-    prompt = f"""Analyze the YouTube {yt_video_statement}transcript segment{whole_transcript_specific[0]} of an influencer discussing the US stock market. Identify the single stock recommendation and assess its conviction level.
+    prompt = f"""Analyze the YouTube {yt_video_statement}transcript segment{whole_transcript_specific[0]} of an influencer discussing the US stock market. Identify stock recommendations and assess their conviction level.
     {whole_transcript_specific[1]}
 
     Instructions:
-    1. Does the video contain a stock recommendation:
-       - Label this as `Stock Recommendation Present` with either "Yes" or "No".
+    1. Does the video contain any stock recommendations:
+       - Label this as `Stock Recommendations Present` with either "Yes" or "No".
 
-    2. If `Stock Recommendation Present` is "Yes", store the single stock recommendation under the key "Recommendation", formatted as a one-item list. The recommendation should follow this structure:{{"Action": "Buy | Hold | Don't Buy | Sell | Short Sell | Unclear",
+    2. If `Stock Recommendations Present` is "Yes", create a list under the key "Recommendations". Each recommendation should follow this structure:{{"Action": "Buy | Hold | Don't Buy | Sell | Short Sell | Unclear",
          "Justification": "Brief explanation for the action based on the transcript",
          "Conviction Score": "1 | 2 | 3",
          "Ticker Name": "Ticker name"}}
@@ -108,8 +108,8 @@ def segment_create_prompt(series, lm_type='vlm', whole=True):
            - Delivery: Decisive recommendations with no qualifiers.{whole_transcript_specific[4]}
        - `Ticker Name`: Specify the ticker name of the stock being discussed.
 
-    3. If `Stock Recommendation Present` is "No", return the following structure:{{"Stock Recommendation Present": "No",
-         "Recommendation": []
+    3. If `Stock Recommendations Present` is "No", return the following structure:{{"Stock Recommendations Present": "No",
+         "Recommendations": []
        }}
 
     Output Requirements:
